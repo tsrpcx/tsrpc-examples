@@ -5,6 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "tsrpc-cli dev",
+    "dev:hall": "tsrpc-cli dev --entry src/hallServer.ts",
+    "dev:room": "tsrpc-cli dev --entry src/roomServer.ts",
     "build": "tsrpc-cli build",
     "doc": "tsrpc-cli doc",
     "test": "mocha test/**/*.test.ts",
