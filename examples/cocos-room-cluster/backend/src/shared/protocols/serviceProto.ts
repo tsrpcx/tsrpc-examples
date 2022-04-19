@@ -1,6 +1,6 @@
 import { ServiceProto } from 'tsrpc-proto';
-import { ReqRegister, ResRegister } from './hallServer-roomManager/PtlRegister';
-import { MsgUpdateRoomState } from './hallServer-roomManager/roomServer/MsgUpdateRoomState';
+import { ReqRegister, ResRegister } from './hallServer/admin/PtlRegisterRoomServer';
+import { MsgUpdateRoomState } from './roomServer/admin/MsgUpdateRoomState';
 import { ReqCreateRoom, ResCreateRoom } from './hallServer-roomManager/roomServer/PtlCreateRoom';
 import { ReqPreJoinRoom, ResPreJoinRoom } from './hallServer-roomManager/roomServer/PtlPreJoinRoom';
 import { ReqCreateRoom as ReqCreateRoom_1, ResCreateRoom as ResCreateRoom_1 } from './hallServer/PtlCreateRoom';
@@ -8,7 +8,7 @@ import { ReqListRooms, ResListRooms } from './hallServer/PtlListRooms';
 import { ReqStartMatch, ResStartMatch } from './hallServer/PtlStartMatch';
 import { ReqExitRoom, ResExitRoom } from './roomServer/PtlExitRoom';
 import { ReqJoinRoom, ResJoinRoom } from './roomServer/PtlJoinRoom';
-import { ReqUpdateRoomInfo, ResUpdateRoomInfo } from './roomServer/PtlUpdateRoomInfo';
+import { ReqUpdateRoomInfo, ResUpdateRoomInfo } from './roomServer/PtlUpdateRoom';
 import { MsgChat } from './roomServer/roomMsg/MsgChat';
 import { MsgUpdateRoomInfo } from './roomServer/roomMsg/MsgUpdateRoomInfo';
 
