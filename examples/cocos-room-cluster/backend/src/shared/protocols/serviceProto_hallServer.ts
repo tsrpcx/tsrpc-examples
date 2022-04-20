@@ -1,4 +1,5 @@
 import { ServiceProto } from 'tsrpc-proto';
+import { ReqRegisterRoomServer, ResRegisterRoomServer } from './hallServer/admin/PtlRegisterRoomServer';
 import { ReqCreateRoom, ResCreateRoom } from './hallServer/PtlCreateRoom';
 import { ReqListRooms, ResListRooms } from './hallServer/PtlListRooms';
 import { ReqLogin, ResLogin } from './hallServer/PtlLogin';
@@ -6,6 +7,10 @@ import { ReqStartMatch, ResStartMatch } from './hallServer/PtlStartMatch';
 
 export interface ServiceType {
     api: {
+        "admin/RegisterRoomServer": {
+            req: ReqRegisterRoomServer,
+            res: ResRegisterRoomServer
+        },
         "CreateRoom": {
             req: ReqCreateRoom,
             res: ResCreateRoom
@@ -29,8 +34,13 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 1,
+    "version": 2,
     "services": [
+        {
+            "id": 0,
+            "name": "admin/RegisterRoomServer",
+            "type": "api"
+        },
         {
             "id": 1,
             "name": "CreateRoom",
@@ -46,7 +56,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 3,
             "name": "Login",
-            "type": "api"
+            "type": "api",
+            "conf": {
+                "allowGuest": true
+            }
         },
         {
             "id": 4,
@@ -56,6 +69,28 @@ export const serviceProto: ServiceProto<ServiceType> = {
         }
     ],
     "types": {
+        "admin/PtlRegisterRoomServer/ReqRegisterRoomServer": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "serverUrl",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "adminToken",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "admin/PtlRegisterRoomServer/ResRegisterRoomServer": {
+            "type": "Interface"
+        },
         "PtlCreateRoom/ReqCreateRoom": {
             "type": "Interface",
             "extends": [
@@ -64,6 +99,15 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "../base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "roomName",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]
@@ -89,6 +133,22 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "../base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "serverUrl",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "roomId",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]
@@ -118,13 +178,101 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "target": "../base/BaseResponse"
                     }
                 }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "rooms",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Interface",
+                            "properties": [
+                                {
+                                    "id": 0,
+                                    "name": "name",
+                                    "type": {
+                                        "type": "String"
+                                    }
+                                },
+                                {
+                                    "id": 4,
+                                    "name": "userNum",
+                                    "type": {
+                                        "type": "Number",
+                                        "scalarType": "uint"
+                                    }
+                                },
+                                {
+                                    "id": 2,
+                                    "name": "serverUrl",
+                                    "type": {
+                                        "type": "String"
+                                    }
+                                },
+                                {
+                                    "id": 3,
+                                    "name": "roomId",
+                                    "type": {
+                                        "type": "String"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
             ]
         },
         "PtlLogin/ReqLogin": {
-            "type": "Interface"
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "nickname",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
         },
         "PtlLogin/ResLogin": {
-            "type": "Interface"
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "sso",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "user",
+                    "type": {
+                        "type": "Reference",
+                        "target": "../../types/UserInfo/UserInfo"
+                    }
+                }
+            ]
+        },
+        "../../types/UserInfo/UserInfo": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "id",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "nickname",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
         },
         "PtlStartMatch/ReqStartMatch": {
             "type": "Interface",
@@ -146,6 +294,23 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "../base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "serverUrl",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "roomId",
+                    "type": {
+                        "type": "Number",
+                        "scalarType": "uint"
                     }
                 }
             ]

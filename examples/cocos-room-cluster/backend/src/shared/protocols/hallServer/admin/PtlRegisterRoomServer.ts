@@ -1,13 +1,12 @@
-import { BaseConf, BaseRequest, BaseResponse } from "../../base";
+import { BaseConf } from "../../base";
 
-export interface ReqRegisterRoomServer extends BaseRequest {
-
+export interface ReqRegisterRoomServer {
+    /** RoomServer 的连接地址 */
+    serverUrl: string,
+    /** Token 用于鉴权 */
+    adminToken: string
 }
 
-export interface ResRegisterRoomServer extends BaseResponse {
-
-}
-
-export const conf: BaseConf = {
+export interface ResRegisterRoomServer {
 
 }
