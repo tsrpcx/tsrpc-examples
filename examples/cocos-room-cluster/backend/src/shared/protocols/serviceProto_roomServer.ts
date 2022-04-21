@@ -39,7 +39,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 2,
+    "version": 3,
     "services": [
         {
             "id": 0,
@@ -49,12 +49,18 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 1,
             "name": "admin/Auth",
-            "type": "api"
+            "type": "api",
+            "conf": {
+                "allowGuest": true
+            }
         },
         {
             "id": 2,
             "name": "admin/CreateRoom",
-            "type": "api"
+            "type": "api",
+            "conf": {
+                "allowGuest": true
+            }
         },
         {
             "id": 3,
@@ -92,8 +98,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Interface",
             "properties": [
                 {
-                    "id": 0,
-                    "name": "userNum",
+                    "id": 2,
+                    "name": "connNum",
                     "type": {
                         "type": "Number",
                         "scalarType": "uint"
@@ -160,6 +166,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "adminToken",
                     "type": {
                         "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "type",
+                    "type": {
+                        "type": "Literal",
+                        "literal": "MatchServer"
                     }
                 }
             ]

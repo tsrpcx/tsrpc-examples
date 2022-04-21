@@ -1,9 +1,14 @@
 import { RoomServerConn } from "../RoomServer/RoomServer";
+import { MsgUpdateRoomState } from "../shared/protocols/roomServer/admin/MsgUpdateRoomState";
 import { MsgUpdateRoomInfo } from "../shared/protocols/roomServer/roomMsg/MsgUpdateRoomInfo";
+
 
 export class Room {
 
-    info!: MsgUpdateRoomInfo
+    info!: MsgUpdateRoomInfo;
+    get state(): MsgUpdateRoomState['rooms'][number] {
+        throw new Error('')
+    }
 
     broadcastMsg() { }
 

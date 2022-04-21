@@ -14,7 +14,7 @@ const tsrpcConf: TsrpcConfig = {
         {
             ptlDir: 'src/shared/protocols/matchServer', // Protocol dir
             output: 'src/shared/protocols/serviceProto_matchServer.ts', // Path for generated ServiceProto
-            apiDir: 'src/HallServer/api',   // API dir
+            apiDir: 'src/MatchServer/api',   // API dir
             docDir: 'docs/matchServer',     // API documents dir
             ptlTemplate: CodeTemplate.getExtendedPtl(),
             // msgTemplate: CodeTemplate.getExtendedMsg(),

@@ -1,7 +1,28 @@
 import { ApiCall } from "tsrpc";
+import { BackConfig } from "../../../models/BackConfig";
+import { roomServer } from "../../../roomServer";
 import { ReqAuth, ResAuth } from "../../../shared/protocols/roomServer/admin/PtlAuth";
+import { RoomServerConn } from "../../RoomServer";
 
 export async function ApiAuth(call: ApiCall<ReqAuth, ResAuth>) {
-    // TODO
-    call.error('API Not Implemented');
+    if (call.req.adminToken !== BackConfig.adminToken) {
+        return call.error('adminToken error');
+    }
+
+    if (call.req.type === 'MatchServer') {
+        let conn = call.conn as RoomServerConn;
+        roomServer.matchServerConn = conn;
+
+        conn.matchServer = {
+            // 定时 Send State
+            intervalSendState: setInterval(() => {
+                conn.sendMsg('admin/UpdateRoomState', {
+                    connNum: roomServer.server.connections.length,
+                    rooms: roomServer.rooms.map(v => v.state)
+                })
+            }, BackConfig.roomServer.intervalSendState)
+        };
+    }
+
+    call.succ({});
 }

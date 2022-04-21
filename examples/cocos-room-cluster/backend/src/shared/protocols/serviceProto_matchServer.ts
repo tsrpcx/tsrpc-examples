@@ -1,14 +1,14 @@
 import { ServiceProto } from 'tsrpc-proto';
-import { ReqRegisterRoomServer, ResRegisterRoomServer } from './matchServer/admin/PtlRegisterRoomServer';
+import { ReqRoomServerJoin, ResRoomServerJoin } from './matchServer/admin/PtlRoomServerJoin';
 import { ReqCreateRoom, ResCreateRoom } from './matchServer/PtlCreateRoom';
 import { ReqListRooms, ResListRooms } from './matchServer/PtlListRooms';
 import { ReqStartMatch, ResStartMatch } from './matchServer/PtlStartMatch';
 
 export interface ServiceType {
     api: {
-        "admin/RegisterRoomServer": {
-            req: ReqRegisterRoomServer,
-            res: ResRegisterRoomServer
+        "admin/RoomServerJoin": {
+            req: ReqRoomServerJoin,
+            res: ResRoomServerJoin
         },
         "CreateRoom": {
             req: ReqCreateRoom,
@@ -29,11 +29,15 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
+    "version": 3,
     "services": [
         {
-            "id": 0,
-            "name": "admin/RegisterRoomServer",
-            "type": "api"
+            "id": 4,
+            "name": "admin/RoomServerJoin",
+            "type": "api",
+            "conf": {
+                "allowGuest": true
+            }
         },
         {
             "id": 1,
@@ -55,7 +59,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
         }
     ],
     "types": {
-        "admin/PtlRegisterRoomServer/ReqRegisterRoomServer": {
+        "admin/PtlRoomServerJoin/ReqRoomServerJoin": {
             "type": "Interface",
             "properties": [
                 {
@@ -74,7 +78,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "admin/PtlRegisterRoomServer/ResRegisterRoomServer": {
+        "admin/PtlRoomServerJoin/ResRoomServerJoin": {
             "type": "Interface"
         },
         "PtlCreateRoom/ReqCreateRoom": {
@@ -244,8 +248,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "id": 1,
                     "name": "roomId",
                     "type": {
-                        "type": "Number",
-                        "scalarType": "uint"
+                        "type": "String"
                     }
                 }
             ]

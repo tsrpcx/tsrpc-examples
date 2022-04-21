@@ -1,3 +1,4 @@
+import { BaseConf } from "../../base"
 
 export interface ReqCreateRoom {
     adminToken: string,
@@ -10,4 +11,8 @@ export interface ReqCreateRoom {
 
 export interface ResCreateRoom {
     roomId: string
+}
+
+export const conf: BaseConf = {
+    allowGuest: true
 }

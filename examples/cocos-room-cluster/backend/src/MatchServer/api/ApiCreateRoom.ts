@@ -5,8 +5,8 @@ import { ReqCreateRoom, ResCreateRoom } from "../../shared/protocols/matchServer
 
 export async function ApiCreateRoom(call: ApiCall<ReqCreateRoom, ResCreateRoom>) {
     // 挑选一个人数最少的 RoomServer
-    let server = matchServer.roomServers.filter(v => v.state).orderBy(v => v.state!.userNum)[0];
-    if (!server) {
+    let roomServer = matchServer.roomServers.filter(v => v.state).orderBy(v => v.state!.connNum)[0];
+    if (!roomServer) {
         return call.error('没有可用的 RoomServer', { type: TsrpcError.Type.ServerError });
     }
 
@@ -15,7 +15,7 @@ export async function ApiCreateRoom(call: ApiCall<ReqCreateRoom, ResCreateRoom>)
     }
 
     // RPC
-    let op = await server.conn.callApi('admin/CreateRoom', {
+    let op = await roomServer.client.callApi('admin/CreateRoom', {
         adminToken: BackConfig.adminToken,
         creator: {
             uid: call.currentUser!.id,
@@ -28,7 +28,7 @@ export async function ApiCreateRoom(call: ApiCall<ReqCreateRoom, ResCreateRoom>)
     }
 
     call.succ({
-        serverUrl: server.url,
+        serverUrl: roomServer.url,
         roomId: op.res.roomId
     })
 }

@@ -1,7 +1,7 @@
 import { uint } from "tsrpc-proto";
 
 export interface MsgUpdateRoomState {
-    userNum: uint,
+    connNum: uint,
     rooms: {
         id: string,
         name: string,
