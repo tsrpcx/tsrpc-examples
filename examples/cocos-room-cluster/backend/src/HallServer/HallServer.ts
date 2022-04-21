@@ -4,7 +4,7 @@ import { useSso } from "../models/flows/useSso";
 import { serviceProto } from "../shared/protocols/serviceProto_hallServer";
 import { UserInfo } from "../shared/types/UserInfo";
 
-export class MatchServer {
+export class HallServer {
     readonly server = new HttpServer(serviceProto, {
         port: 3000,
         // Remove this to use binary mode (remove from the client too)
@@ -23,12 +23,5 @@ export class MatchServer {
 
     async start() {
         await this.server.start();
-    }
-}
-
-declare module 'tsrpc' {
-    export interface ApiCall {
-        /** 只要协议配置的 `allowGuest` 不为 `true`，则必定有值 */
-        currentUser?: UserInfo;
     }
 }

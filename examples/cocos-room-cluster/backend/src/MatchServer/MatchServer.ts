@@ -1,11 +1,9 @@
 import path from "path";
 import { HttpServer, WsClient } from "tsrpc";
 import { useSso } from "../models/flows/useSso";
-import { UserUtil } from "../models/UserUtil";
 import { MsgUpdateRoomState } from "../shared/protocols/roomServer/admin/MsgUpdateRoomState";
 import { serviceProto } from "../shared/protocols/serviceProto_matchServer";
 import { ServiceType as ServiceType_Room } from "../shared/protocols/serviceProto_roomServer";
-import { UserInfo } from "../shared/types/UserInfo";
 
 export class MatchServer {
     readonly server = new HttpServer(serviceProto, {
