@@ -10,4 +10,5 @@ export async function ApiRoomServerJoin(call: ApiCall<ReqRoomServerJoin, ResRoom
     }
 
     await matchServer.joinRoomServer(call.req.serverUrl);
+    call.succ({})
 }

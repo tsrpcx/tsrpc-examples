@@ -5,10 +5,6 @@ import { ReqAuth, ResAuth } from "../../../shared/protocols/roomServer/admin/Ptl
 import { RoomServerConn } from "../../RoomServer";
 
 export async function ApiAuth(call: ApiCall<ReqAuth, ResAuth>) {
-    if (call.req.adminToken !== BackConfig.adminToken) {
-        return call.error('adminToken error');
-    }
-
     if (call.req.type === 'MatchServer') {
         let conn = call.conn as RoomServerConn;
         roomServer.matchServerConn = conn;

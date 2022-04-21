@@ -2,19 +2,23 @@ import chalk from "chalk";
 import path from "path";
 import { HttpClient, WsConnection, WsServer } from "tsrpc";
 import { BackConfig } from "../models/BackConfig";
-import { Room } from "./models/Room";
+import { useAdminToken } from "../models/flows/useAdminToken";
 import { serviceProto as serviceProto_matchServer } from "../shared/protocols/serviceProto_matchServer";
 import { serviceProto, ServiceType } from "../shared/protocols/serviceProto_roomServer";
 import { UserInfo } from "../shared/types/UserInfo";
+import { useCleanConn } from "./models/flows/useCleanConn";
+import { useSsoWs } from "./models/flows/useSsoWs";
+import { Room } from "./models/Room";
 
 export interface RoomServerOptions {
+    port: number,
     thisServerUrl: string,
     matchServerUrl: string
 }
 
 export class RoomServer {
     readonly server = new WsServer(serviceProto, {
-        port: parseInt(process.env['PORT'] || '3002'),
+        port: this.options.port,
         // Remove this to use binary mode (remove from the client too)
         json: true
     });
@@ -24,32 +28,10 @@ export class RoomServer {
     rooms: Room[] = [];
 
     constructor(public readonly options: RoomServerOptions) {
-        // 前置鉴别登录态
-        this.server.flows.preApiCallFlow.push(async call => {
-            const conn = call.conn as RoomServerConn;
-            // 需要登录的接口：前置登录态判定
-            if (!call.service.conf?.allowGuest) {
-                if (!conn.currentUser) {
-                    call.error('你还未登录', { code: 'NEED_LOGIN' });
-                    return undefined;
-                }
-            }
-
-            return call;
-        });
-
-        // MatchServer 断开后清理
-        this.server.flows.postDisconnectFlow.push(v => {
-            let conn = v.conn as RoomServerConn;
-            if (conn.matchServer) {
-                clearInterval(conn.matchServer.intervalSendState)
-                if (this.matchServerConn === conn) {
-                    this.matchServerConn = undefined;
-                }
-            }
-
-            return v;
-        })
+        // Flows
+        useAdminToken(this.server);
+        useSsoWs(this.server);
+        useCleanConn(this.server);
     }
 
     async init() {
@@ -73,7 +55,7 @@ export class RoomServer {
             return;
         }
 
-        this.logger.log(chalk.cyan('Starting join match server: ' + this.options.matchServerUrl));
+        this.logger.log(chalk.cyan('正在加入 MatchServer: ' + this.options.matchServerUrl));
         let client = new HttpClient(serviceProto_matchServer, {
             server: this.options.matchServerUrl
         })
@@ -82,14 +64,14 @@ export class RoomServer {
             serverUrl: this.options.thisServerUrl
         });
         if (!ret.isSucc) {
-            this.logger.error('Join match server failed.', ret.err);
+            this.logger.error('MatchServer 加入失败', ret.err);
             return;
         }
         if (!this.matchServerConn) {
-            this.logger.warn('Join match server succ, but not matchServerConn');
+            this.logger.error('MatchServer 加入成功, 但缺少 matchServerConn');
             return;
         }
-        this.logger.log(chalk.green('Join match server succ.'));
+        this.logger.log(chalk.green('MatchServer 加入成功'));
     }
     private _isJoiningMatchServer?: boolean;
     matchServerConn?: RoomServerConn;
