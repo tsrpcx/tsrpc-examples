@@ -2,7 +2,7 @@ import chalk from "chalk";
 import path from "path";
 import { HttpClient, WsConnection, WsServer } from "tsrpc";
 import { BackConfig } from "../models/BackConfig";
-import { Room } from "../models/Room";
+import { Room } from "./models/Room";
 import { serviceProto as serviceProto_matchServer } from "../shared/protocols/serviceProto_matchServer";
 import { serviceProto, ServiceType } from "../shared/protocols/serviceProto_roomServer";
 import { UserInfo } from "../shared/types/UserInfo";
