@@ -1,9 +1,9 @@
 import { ApiCall, TerminalColorLogger, WsClient } from "tsrpc";
-import { hallServer } from "../../../hallServer";
+import { matchServer } from "../../../matchServer";
 import { BackConfig } from "../../../models/BackConfig";
-import { ReqRegisterRoomServer, ResRegisterRoomServer } from "../../../shared/protocols/hallServer/admin/PtlRegisterRoomServer";
+import { ReqRegisterRoomServer, ResRegisterRoomServer } from "../../../shared/protocols/matchServer/admin/PtlRegisterRoomServer";
 import { serviceProto } from "../../../shared/protocols/serviceProto_roomServer";
-import { HallServer } from "../../HallServer";
+import { MatchServer } from "../../MatchServer";
 
 let nextRoomIndex = 1;
 
@@ -11,6 +11,11 @@ export async function ApiRegisterRoomServer(call: ApiCall<ReqRegisterRoomServer,
     // 鉴权
     if (call.req.adminToken !== BackConfig.adminToken) {
         return call.error('非法操作');
+    }
+
+    // 已经注册过
+    if (matchServer.roomServers.some(v => v.url === call.req.serverUrl)) {
+        return call.succ({})
     }
 
     // Create
@@ -27,7 +32,7 @@ export async function ApiRegisterRoomServer(call: ApiCall<ReqRegisterRoomServer,
 
     // Flows
     client.flows.postDisconnectFlow.push(v => {
-        hallServer.roomServers.remove(v1 => v1.conn === client);
+        matchServer.roomServers.remove(v1 => v1.conn === client);
         return v;
     });
     client.listenMsg('admin/UpdateRoomState', msg => {
@@ -47,10 +52,16 @@ export async function ApiRegisterRoomServer(call: ApiCall<ReqRegisterRoomServer,
     }
 
     // Succ
-    let roomServer: HallServer['roomServers'][number] = {
+    let roomServer: MatchServer['roomServers'][number] = {
         url: call.req.serverUrl,
         conn: client
     }
-    hallServer.roomServers.push(roomServer);
+    // 已经注册过或并发请求
+    if (matchServer.roomServers.some(v => v.url === call.req.serverUrl)) {
+        client.disconnect();
+        return call.succ({})
+    }
+    matchServer.roomServers.push(roomServer);
+
     call.succ({});
 }

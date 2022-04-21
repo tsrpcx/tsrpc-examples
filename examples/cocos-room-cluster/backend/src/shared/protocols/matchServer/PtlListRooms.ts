@@ -1,5 +1,5 @@
 import { uint } from "tsrpc";
-import { BaseConf, BaseRequest, BaseResponse } from "./../base";
+import { BaseConf, BaseRequest, BaseResponse } from "../base";
 
 export interface ReqListRooms extends BaseRequest {
 

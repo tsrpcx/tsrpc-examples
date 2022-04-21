@@ -1,11 +1,11 @@
 import { ApiCall, TsrpcError } from "tsrpc";
-import { hallServer } from "../../hallServer";
+import { matchServer } from "../../matchServer";
 import { BackConfig } from "../../models/BackConfig";
-import { ReqCreateRoom, ResCreateRoom } from "../../shared/protocols/hallServer/PtlCreateRoom";
+import { ReqCreateRoom, ResCreateRoom } from "../../shared/protocols/matchServer/PtlCreateRoom";
 
 export async function ApiCreateRoom(call: ApiCall<ReqCreateRoom, ResCreateRoom>) {
     // 挑选一个人数最少的 RoomServer
-    let server = hallServer.roomServers.filter(v => v.state).orderBy(v => v.state!.userNum)[0];
+    let server = matchServer.roomServers.filter(v => v.state).orderBy(v => v.state!.userNum)[0];
     if (!server) {
         return call.error('没有可用的 RoomServer', { type: TsrpcError.Type.ServerError });
     }

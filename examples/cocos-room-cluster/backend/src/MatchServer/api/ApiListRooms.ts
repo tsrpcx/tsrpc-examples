@@ -1,9 +1,9 @@
 import { ApiCall } from "tsrpc";
-import { hallServer } from "../../hallServer";
-import { ReqListRooms, ResListRooms } from "../../shared/protocols/hallServer/PtlListRooms";
+import { matchServer } from "../../matchServer";
+import { ReqListRooms, ResListRooms } from "../../shared/protocols/matchServer/PtlListRooms";
 
 export async function ApiListRooms(call: ApiCall<ReqListRooms, ResListRooms>) {
-    let rooms = hallServer.roomServers.reduce((prev, next) => {
+    let rooms = matchServer.roomServers.reduce((prev, next) => {
         if (next.state) {
             prev = prev.concat(next.state.rooms.map(v => ({
                 name: v.name,

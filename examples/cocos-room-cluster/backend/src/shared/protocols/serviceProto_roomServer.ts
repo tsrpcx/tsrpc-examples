@@ -66,7 +66,9 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "id": 4,
             "name": "JoinRoom",
             "type": "api",
-            "conf": {}
+            "conf": {
+                "allowGuest": true
+            }
         },
         {
             "id": 5,
@@ -290,7 +292,20 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "target": "../base/BaseResponse"
                     }
                 }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "roomInfo",
+                    "type": {
+                        "type": "Reference",
+                        "target": "roomMsg/MsgUpdateRoomInfo/MsgUpdateRoomInfo"
+                    }
+                }
             ]
+        },
+        "roomMsg/MsgUpdateRoomInfo/MsgUpdateRoomInfo": {
+            "type": "Interface"
         },
         "PtlUpdateRoom/ReqUpdateRoom": {
             "type": "Interface",
@@ -333,9 +348,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ]
         },
         "roomMsg/MsgChat/MsgChat": {
-            "type": "Interface"
-        },
-        "roomMsg/MsgUpdateRoomInfo/MsgUpdateRoomInfo": {
             "type": "Interface"
         }
     }

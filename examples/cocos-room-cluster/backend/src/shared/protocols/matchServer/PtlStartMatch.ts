@@ -1,5 +1,5 @@
 import { uint } from "tsrpc-proto";
-import { BaseConf, BaseRequest, BaseResponse } from "./../base";
+import { BaseConf, BaseRequest, BaseResponse } from "../base";
 
 export interface ReqStartMatch extends BaseRequest {
 

@@ -4,7 +4,9 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "dev": "START npm run dev:hall & START npm run dev:match & START npm run dev:room",
     "dev:hall": "tsrpc-cli dev --entry src/hallServer.ts",
+    "dev:match": "tsrpc-cli dev --entry src/matchServer.ts",
     "dev:room": "tsrpc-cli dev --entry src/roomServer.ts",
     "build": "tsrpc-cli build",
     "doc": "tsrpc-cli doc",

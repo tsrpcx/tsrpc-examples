@@ -12,6 +12,14 @@ const tsrpcConf: TsrpcConfig = {
             // msgTemplate: CodeTemplate.getExtendedMsg(),
         },
         {
+            ptlDir: 'src/shared/protocols/matchServer', // Protocol dir
+            output: 'src/shared/protocols/serviceProto_matchServer.ts', // Path for generated ServiceProto
+            apiDir: 'src/HallServer/api',   // API dir
+            docDir: 'docs/matchServer',     // API documents dir
+            ptlTemplate: CodeTemplate.getExtendedPtl(),
+            // msgTemplate: CodeTemplate.getExtendedMsg(),
+        },
+        {
             ptlDir: 'src/shared/protocols/roomServer', // Protocol dir
             output: 'src/shared/protocols/serviceProto_roomServer.ts', // Path for generated ServiceProto
             apiDir: 'src/RoomServer/api',   // API dir

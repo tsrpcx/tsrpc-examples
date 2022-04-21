@@ -1,15 +1,25 @@
 import path from "path";
-import { HttpServer } from "tsrpc";
+import { HttpServer, WsClient } from "tsrpc";
 import { useSso } from "../models/flows/useSso";
-import { serviceProto } from "../shared/protocols/serviceProto_hallServer";
+import { UserUtil } from "../models/UserUtil";
+import { MsgUpdateRoomState } from "../shared/protocols/roomServer/admin/MsgUpdateRoomState";
+import { serviceProto } from "../shared/protocols/serviceProto_matchServer";
+import { ServiceType as ServiceType_Room } from "../shared/protocols/serviceProto_roomServer";
 import { UserInfo } from "../shared/types/UserInfo";
 
 export class MatchServer {
     readonly server = new HttpServer(serviceProto, {
-        port: 3000,
+        port: 3001,
         // Remove this to use binary mode (remove from the client too)
         json: true
     });
+
+    /** 已注册的 RoomServer */
+    readonly roomServers: {
+        url: string,
+        conn: WsClient<ServiceType_Room>,
+        state?: MsgUpdateRoomState
+    }[] = [];
 
     constructor() {
         // Flows
@@ -23,12 +33,5 @@ export class MatchServer {
 
     async start() {
         await this.server.start();
-    }
-}
-
-declare module 'tsrpc' {
-    export interface ApiCall {
-        /** 只要协议配置的 `allowGuest` 不为 `true`，则必定有值 */
-        currentUser?: UserInfo;
     }
 }
