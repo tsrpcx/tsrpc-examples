@@ -1,11 +1,9 @@
+import { UserInfo } from "../../../types/UserInfo"
 import { BaseConf } from "../../base"
 
 export interface ReqCreateRoom {
     adminToken: string,
-    creator: {
-        uid: string,
-        nickname: string
-    }
+    creator: UserInfo,
     roomName: string
 }
 

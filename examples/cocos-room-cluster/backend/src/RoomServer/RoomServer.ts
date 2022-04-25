@@ -32,6 +32,11 @@ export class RoomServer {
         useAdminToken(this.server);
         useSsoWs(this.server);
         useCleanConn(this.server);
+
+        // 定时清除闲置的房间
+        setInterval(() => {
+            this._clearIdleRooms();
+        }, 10000);
     }
 
     async init() {
@@ -75,6 +80,32 @@ export class RoomServer {
     }
     private _isJoiningMatchServer?: boolean;
     matchServerConn?: RoomServerConn;
+
+    private _nextRoomId = 1;
+    createRoom(roomName: string): Room {
+        let room = new Room({
+            id: '' + this._nextRoomId++,
+            maxUser: 50,
+            name: roomName,
+            users: [],
+            messages: []
+        });
+
+        this.rooms.push(room);
+        this.id2Room.set(room.data.id, room);
+
+        return room;
+    }
+
+    private _clearIdleRooms() {
+        const now = Date.now();
+        // 清除超过 10 秒没有玩家的房间
+        this.rooms.filter(v => v.data.lastEmptyTime && now - v.data.lastEmptyTime >= 10000).forEach(room => {
+            this.rooms.removeOne(v => v === room);
+            this.id2Room.delete(room.data.id);
+            room.destroy();
+        })
+    }
 }
 
 export type RoomServerConn = WsConnection<ServiceType> & {

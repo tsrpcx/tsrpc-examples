@@ -29,10 +29,9 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 2,
     "services": [
         {
-            "id": 4,
+            "id": 0,
             "name": "admin/RoomServerJoin",
             "type": "api",
             "conf": {
