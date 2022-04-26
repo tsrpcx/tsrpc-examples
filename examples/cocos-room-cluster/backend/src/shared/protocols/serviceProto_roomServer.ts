@@ -46,6 +46,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
+    "version": 2,
     "services": [
         {
             "id": 0,
@@ -147,6 +148,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 {
                                     "id": 2,
                                     "name": "userNum",
+                                    "type": {
+                                        "type": "Number",
+                                        "scalarType": "uint"
+                                    }
+                                },
+                                {
+                                    "id": 5,
+                                    "name": "maxUserNum",
                                     "type": {
                                         "type": "Number",
                                         "scalarType": "uint"
@@ -459,6 +468,21 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "type": "Number"
                     },
                     "optional": true
+                },
+                {
+                    "id": 6,
+                    "name": "startMatchTime",
+                    "type": {
+                        "type": "Number"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 7,
+                    "name": "updateTime",
+                    "type": {
+                        "type": "Number"
+                    }
                 }
             ]
         },

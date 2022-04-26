@@ -31,6 +31,7 @@ export async function ApiJoin(call: ApiCall<ReqJoin, ResJoin>) {
     conn.currentRoom = room;
     room.listenMsgs(conn);
     room.data.lastEmptyTime = undefined;
+    room.data.updateTime = Date.now();
 
     room.broadcastMsg('room/serverMsg/UserJoin', {
         time: new Date,

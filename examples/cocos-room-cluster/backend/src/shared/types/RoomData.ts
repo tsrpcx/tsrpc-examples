@@ -1,4 +1,4 @@
-import { uint } from "tsrpc"
+import { uint } from "tsrpc-proto"
 import { UserInfo } from "./UserInfo"
 
 export interface RoomData {
@@ -19,5 +19,13 @@ export interface RoomData {
      * 上一次空房的时间（undefined 代表房内有人）
      * 用于定时解散无人的房间
      */
-    lastEmptyTime?: number
+    lastEmptyTime?: number,
+
+    /**
+     * 开始匹配的时间，`undefined` 代表不在匹配中
+     */
+    startMatchTime?: number,
+
+    /** 房间信息的最后更新时间 */
+    updateTime: number
 }

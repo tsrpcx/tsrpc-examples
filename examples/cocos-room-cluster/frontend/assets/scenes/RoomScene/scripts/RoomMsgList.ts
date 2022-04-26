@@ -4,18 +4,18 @@ const { ccclass, property } = _decorator;
 
 /**
  * Predefined variables
- * Name = PopupUserListItem
- * DateTime = Tue Apr 26 2022 18:54:57 GMT+0800 (中国标准时间)
+ * Name = RoomMsgList
+ * DateTime = Wed Apr 27 2022 00:48:33 GMT+0800 (中国标准时间)
  * Author = k8w
- * FileBasename = PopupUserListItem.ts
- * FileBasenameNoExtension = PopupUserListItem
- * URL = db://assets/scenes/RoomScene/prefabs/PopupUserListItem/PopupUserListItem.ts
+ * FileBasename = RoomMsgList.ts
+ * FileBasenameNoExtension = RoomMsgList
+ * URL = db://assets/scenes/RoomScene/scripts/RoomMsgList.ts
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/zh/
  *
  */
  
-@ccclass('PopupUserListItem')
-export class PopupUserListItem extends Component {
+@ccclass('RoomMsgList')
+export class RoomMsgList extends Component {
     // [1]
     // dummy = '';
 

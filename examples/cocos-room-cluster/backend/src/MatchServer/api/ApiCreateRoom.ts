@@ -19,7 +19,7 @@ export async function ApiCreateRoom(call: ApiCall<ReqCreateRoom, ResCreateRoom>)
     let op = await roomServer.client.callApi('admin/CreateRoom', {
         adminToken: BackConfig.adminToken,
         creator: {
-            uid: call.currentUser!.id,
+            id: call.currentUser!.id,
             nickname: call.currentUser!.nickname
         },
         roomName: call.req.roomName

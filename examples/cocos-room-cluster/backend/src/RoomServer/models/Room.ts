@@ -21,7 +21,16 @@ export class Room {
     }
 
     get state(): MsgUpdateRoomState['rooms'][number] {
-        throw new Error('')
+        return {
+            id: this.data.id,
+            name: this.data.name,
+            userNum: this.conns.length,
+            maxUserNum: this.data.maxUser,
+            /** 为 undefined 代表不在匹配中 */
+            startMatchTime: this.data.startMatchTime,
+            // 房间信息的最后更新时间
+            updateTime: this.data.updateTime
+        }
     }
 
     /** 房间内广播 */
@@ -42,6 +51,7 @@ export class Room {
 
         this.conns.removeOne(v => v === conn);
         this.data.users.removeOne(v => v.id === currentUser.id);
+        this.data.updateTime = Date.now();
 
         if (conn) {
             conn.currentRoom = undefined;

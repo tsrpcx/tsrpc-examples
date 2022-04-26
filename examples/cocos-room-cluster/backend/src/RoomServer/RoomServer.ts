@@ -88,7 +88,9 @@ export class RoomServer {
             maxUser: 50,
             name: roomName,
             users: [],
-            messages: []
+            messages: [],
+            startMatchTime: Date.now(),
+            updateTime: Date.now()
         });
 
         this.rooms.push(room);

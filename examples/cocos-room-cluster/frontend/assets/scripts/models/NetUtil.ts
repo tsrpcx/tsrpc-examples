@@ -39,7 +39,7 @@ export class NetUtil {
     static get matchClient(): NonNullable<typeof NetUtil._matchClient> {
         if (!this._matchClient) {
             this._matchClient = new (WECHAT ? HttpClient_Miniapp : HttpClient_Browser)(serviceProto_match, {
-                server: 'http://127.0.0.1:3000',
+                server: 'http://127.0.0.1:3001',
                 // json: true,
                 logger: console
             });
@@ -58,7 +58,7 @@ export class NetUtil {
 
     /** Room Server */
     static createRoomClient(serverUrl: string): WsClient_Browser<ServiceType_Room> | WsClient_Miniapp<ServiceType_Room> {
-        return new (WECHAT ? WsClient_Miniapp : WsClient_Browser)(serviceProto_room, {
+        let client = new (WECHAT ? WsClient_Miniapp : WsClient_Browser)(serviceProto_room, {
             server: serverUrl,
             heartbeat: {
                 interval: 5000,
@@ -66,7 +66,12 @@ export class NetUtil {
             },
             // json: true,
             logger: console
-        })
+        });
+
+        // FLOWS
+        // TODO
+
+        return client;
     }
 
 }

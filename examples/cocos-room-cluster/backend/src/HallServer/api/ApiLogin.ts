@@ -1,5 +1,5 @@
 import { ApiCall } from "tsrpc";
-import uuid from "uuid";
+import * as uuid from "uuid";
 import { UserUtil } from "../../models/UserUtil";
 import { ReqLogin, ResLogin } from "../../shared/protocols/hallServer/PtlLogin";
 import { UserInfo } from "../../shared/types/UserInfo";

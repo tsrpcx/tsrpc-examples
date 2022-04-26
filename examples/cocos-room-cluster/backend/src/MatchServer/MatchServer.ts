@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import path from "path";
-import { ApiCallHttp, HttpServer, PrefixLogger, TsrpcError, WsClient } from "tsrpc";
+import { ApiCallHttp, ConnectionStatus, HttpServer, PrefixLogger, TsrpcError, WsClient } from "tsrpc";
 import { BackConfig } from "../models/BackConfig";
 import { useSso } from "../models/flows/useSso";
 import { ReqStartMatch, ResStartMatch } from "../shared/protocols/matchServer/PtlStartMatch";
@@ -144,19 +144,18 @@ export class MatchServer {
 
         this.matchQueue.forEach((call, uid) => {
             // 连接已断开，不再匹配
-            if (!call.conn.httpRes.writable) {
+            if (call.conn.status !== ConnectionStatus.Opened) {
                 this.matchQueue.delete(uid);
                 return;
             }
 
-            // 尝试匹配
-            let roomIndex = matchingRooms.findIndex(v => v.userNum < BackConfig.roomServer.maxRoomUserNum);
+            // 尝试匹配，优先匹配人多的房间
+            let room = matchingRooms.filter(v => v.userNum < BackConfig.roomServer.maxRoomUserNum).orderByDesc(v => v.userNum)[0];
             // 匹配成功
-            if (roomIndex > -1) {
-                let room = matchingRooms[roomIndex]
+            if (room) {
                 ++room.userNum;
                 if (room.userNum >= BackConfig.roomServer.maxRoomUserNum) {
-                    matchingRooms.splice(roomIndex, 1);
+                    matchingRooms.removeOne(v => v === room);
                 }
                 call.succ({
                     serverUrl: room.serverUrl,
@@ -164,6 +163,7 @@ export class MatchServer {
                 })
                 ++succNum;
             }
+            // TODO 没有合适的房间，那么创建一个房间
         })
 
         this.logger.log(`匹配结束，成功匹配人数=${succNum}`)

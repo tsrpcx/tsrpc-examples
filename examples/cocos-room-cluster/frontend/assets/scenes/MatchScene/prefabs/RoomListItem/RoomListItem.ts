@@ -1,44 +1,34 @@
 
-import { _decorator, Component, Node } from 'cc';
+import { Component, Label, _decorator } from 'cc';
+import { SceneUtil } from '../../../../scripts/models/SceneUtil';
+import { ResListRooms } from '../../../../scripts/shared/protocols/matchServer/PtlListRooms';
 const { ccclass, property } = _decorator;
 
-/**
- * Predefined variables
- * Name = RoomListItem
- * DateTime = Tue Apr 26 2022 19:25:27 GMT+0800 (中国标准时间)
- * Author = k8w
- * FileBasename = RoomListItem.ts
- * FileBasenameNoExtension = RoomListItem
- * URL = db://assets/scenes/MatchScene/prefabs/RoomListItem/RoomListItem.ts
- * ManualUrl = https://docs.cocos.com/creator/3.4/manual/zh/
- *
- */
- 
+export type RoomListItemOptions = ResListRooms['rooms'][number];
 @ccclass('RoomListItem')
 export class RoomListItem extends Component {
-    // [1]
-    // dummy = '';
 
-    // [2]
-    // @property
-    // serializableDummy = 0;
+    @property(Label)
+    labelName!: Label;
+    @property(Label)
+    labelInfo!: Label;
 
-    start () {
-        // [3]
+    private _options!: RoomListItemOptions;
+    public get options(): RoomListItemOptions {
+        return this._options!;
+    }
+    public set options(v: RoomListItemOptions) {
+        this._options = v;
+
+        this.labelName.string = v.name;
+        this.labelInfo.string = `人数：${v.userNum} / ${v.maxUserNum}`
     }
 
-    // update (deltaTime: number) {
-    //     // [4]
-    // }
-}
+    onBtnJoin() {
+        SceneUtil.loadScene('RoomScene', {
+            serverUrl: this._options.serverUrl,
+            roomId: this._options.roomId
+        })
+    }
 
-/**
- * [1] Class member could be defined like this.
- * [2] Use `property` decorator if your want the member to be serializable.
- * [3] Your initialization goes here.
- * [4] Your update function goes here.
- *
- * Learn more about scripting: https://docs.cocos.com/creator/3.4/manual/zh/scripting/
- * Learn more about CCClass: https://docs.cocos.com/creator/3.4/manual/zh/scripting/decorator.html
- * Learn more about life-cycle callbacks: https://docs.cocos.com/creator/3.4/manual/zh/scripting/life-cycle-callbacks.html
- */
+}

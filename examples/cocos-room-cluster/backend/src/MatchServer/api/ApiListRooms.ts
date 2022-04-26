@@ -8,6 +8,7 @@ export async function ApiListRooms(call: ApiCall<ReqListRooms, ResListRooms>) {
             prev = prev.concat(next.state.rooms.map(v => ({
                 name: v.name,
                 userNum: v.userNum,
+                maxUserNum: v.maxUserNum,
                 serverUrl: next.url,
                 roomId: v.id,
                 updateTime: v.updateTime

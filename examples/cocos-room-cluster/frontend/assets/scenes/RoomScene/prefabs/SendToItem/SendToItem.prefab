@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "PopupUserListItem",
+    "_name": "SendToItem",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -32,15 +32,18 @@
       },
       {
         "__id__": 12
+      },
+      {
+        "__id__": 14
       }
     ],
     "_prefab": {
-      "__id__": 14
+      "__id__": 16
     },
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 210,
+      "y": 180,
       "z": 0
     },
     "_lrot": {
@@ -138,7 +141,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "60SdV1lqNDBoAsa4JFxurF"
+    "fileId": "f4g88cS/xF97vrg/h9q49o"
   },
   {
     "__type__": "cc.Label",
@@ -183,7 +186,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "82MUoXmJFLao5TzdcKJt1h"
+    "fileId": "784S3D7DhHCaUZBGYR7yvP"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -193,7 +196,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "8dmjgpWyRC04NDWDAUOovO"
+    "fileId": "1d1/zghfpApqzIn0MJ3gL8"
   },
   {
     "__type__": "cc.UITransform",
@@ -220,7 +223,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "2cCpEVGVVIyYYsXbZz02lq"
+    "fileId": "1dVb4cDANML5saWmBQFiIO"
   },
   {
     "__type__": "cc.Widget",
@@ -255,7 +258,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "a7hPMyzKxABIK6uegYmjTK"
+    "fileId": "f9iu1CWh1Lmr4V6laHegZk"
   },
   {
     "__type__": "cc.Button",
@@ -310,7 +313,27 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "1167JKDLlFrKZ2PoKeKhkU"
+    "fileId": "8erF8v1w5FFYjUSLQTRSJX"
+  },
+  {
+    "__type__": "8bf6bB23KJA5JWK9nW3CQYt",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 15
+    },
+    "labelName": {
+      "__id__": 5
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "9dteLW7ZZGNbk3vDhHEJ9V"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -320,6 +343,6 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "18nCTWyH1IPKHB1FcUtbib"
+    "fileId": "ebgZq0sfNKEKkvPtdSXfxi"
   }
 ]
