@@ -7,6 +7,7 @@
       "gfx-webgl2",
       "intersection-2d",
       "profiler",
+      "tween",
       "ui"
     ],
     "cache": {
@@ -82,7 +83,7 @@
         "_value": false
       },
       "tween": {
-        "_value": false
+        "_value": true
       },
       "terrain": {
         "_value": false

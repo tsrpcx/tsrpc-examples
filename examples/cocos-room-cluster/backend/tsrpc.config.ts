@@ -30,11 +30,11 @@ const tsrpcConf: TsrpcConfig = {
     ],
     // Sync shared code
     sync: [
-        // {
-        //     from: 'src/shared',
-        //     to: '../frontend/src/shared',
-        //     type: 'symlink'     // Change this to 'copy' if your environment not support symlink
-        // }
+        {
+            from: 'src/shared',
+            to: '../frontend/assets/scripts/shared',
+            type: 'symlink'     // Change this to 'copy' if your environment not support symlink
+        }
     ],
     // Dev server
     dev: {

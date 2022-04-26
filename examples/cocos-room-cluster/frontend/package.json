@@ -4,5 +4,10 @@
   "version": "3.4.2",
   "creator": {
     "version": "3.4.2"
+  },
+  "description": "TSRPC 房间管理",
+  "dependencies": {
+    "tsrpc-browser": "^3.3.0",
+    "tsrpc-miniapp": "^3.3.0"
   }
 }
