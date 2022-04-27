@@ -1,5 +1,5 @@
 import { director } from "cc";
-import { RoomSceneParams } from "../../scenes/RoomScene/scripts/RoomScene";
+import { RoomSceneParams } from "../../scenes/RoomScene/scripts/RoomScene2";
 
 export interface SceneParamsMap {
     MatchScene: {},
