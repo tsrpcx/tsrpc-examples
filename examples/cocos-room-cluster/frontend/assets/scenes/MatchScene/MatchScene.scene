@@ -2741,14 +2741,8 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "login": {
-      "__id__": 12
-    },
     "inputNickname": {
       "__id__": 26
-    },
-    "rooms": {
-      "__id__": 32
     },
     "roomList": {
       "__id__": 49
@@ -2761,7 +2755,7 @@
       "__uuid__": "b019de5a-7dfa-4bec-9c23-d657f32cf608",
       "__expectedType__": "cc.Prefab"
     },
-    "_id": "5eHJQ3+3BBX7PQ2EKRykmA"
+    "_id": "abTtfFONlMIKlAbhImEC9q"
   },
   {
     "__type__": "cc.PrefabInfo",

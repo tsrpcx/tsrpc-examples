@@ -14,12 +14,9 @@ export class Player extends Component {
     mesh!: SkinnedMeshRenderer;
     @property(Node)
     namePos!: Node;
-    @property(Node)
-    labelName!: Node;
-    @property(Camera)
-    camera!: Camera;
 
-    private _scheduler?: any;
+    labelName!: Node;
+    camera!: Camera;
 
     private _aniState: PlayerAniState = 'idle';
     public get aniState(): PlayerAniState {

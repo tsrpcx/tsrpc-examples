@@ -11,7 +11,7 @@ import { serviceProto as serviceProto_roomServer, ServiceType as ServiceType_Roo
 
 export class MatchServer {
     readonly server = new HttpServer(serviceProto, {
-        port: 3001,
+        port: 3000,
         // Remove this to use binary mode (remove from the client too)
         json: true
     });

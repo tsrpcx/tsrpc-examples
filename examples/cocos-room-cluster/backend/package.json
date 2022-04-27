@@ -7,7 +7,7 @@
     "dev": "START npm run dev:match & START npm run dev:room",
     "dev:match": "tsrpc-cli dev --entry src/matchServer.ts",
     "dev:room": "tsrpc-cli dev --entry src/roomServer.ts",
-    "dev:room2": "cross-env PORT=3004 tsrpc-cli dev --entry src/roomServer.ts",
+    "dev:room2": "cross-env PORT=3002 tsrpc-cli dev --entry src/roomServer.ts",
     "build": "tsrpc-cli build",
     "doc": "tsrpc-cli doc",
     "test": "mocha test/**/*.test.ts",

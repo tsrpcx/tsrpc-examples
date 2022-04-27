@@ -1,10 +1,15 @@
 
 import { Component, Label, _decorator } from 'cc';
-import { SceneUtil } from '../../../../scripts/models/SceneUtil';
 import { ResListRooms } from '../../../../scripts/shared/protocols/matchServer/PtlListRooms';
 const { ccclass, property } = _decorator;
 
-export type RoomListItemOptions = ResListRooms['rooms'][number];
+export type RoomListItemOptions = {
+    room: ResListRooms['rooms'][number],
+    onClick: (v: {
+        serverUrl: string,
+        roomId: string
+    }) => void
+};
 @ccclass('RoomListItem')
 export class RoomListItem extends Component {
 
@@ -20,14 +25,14 @@ export class RoomListItem extends Component {
     public set options(v: RoomListItemOptions) {
         this._options = v;
 
-        this.labelName.string = v.name;
-        this.labelInfo.string = `人数：${v.userNum} / ${v.maxUserNum}`
+        this.labelName.string = v.room.name;
+        this.labelInfo.string = `人数:${v.room.userNum} ${v.room.serverUrl}`
     }
 
     onBtnJoin() {
-        SceneUtil.loadScene('RoomScene', {
-            serverUrl: this._options.serverUrl,
-            roomId: this._options.roomId
+        this._options.onClick({
+            serverUrl: this._options.room.serverUrl,
+            roomId: this._options.room.roomId
         })
     }
 

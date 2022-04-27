@@ -92,6 +92,9 @@ export class Room {
         this.logger.log('[Destroy]');
         this._intervals.forEach(v => { clearInterval(v) });
         this._intervals = [];
+
+        roomServer.rooms.removeOne(v => v === this);
+        roomServer.id2Room.delete(this.data.id);
     }
 
     private _intervals: ReturnType<typeof setInterval>[] = [];

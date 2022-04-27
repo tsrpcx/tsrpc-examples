@@ -1,7 +1,16 @@
 export interface RoomUserState {
     uid: string,
-    pos: [number, number, number],
-    rotation: [number, number, number, number],
+    pos: {
+        x: number,
+        y: number,
+        z: number
+    },
+    rotation: {
+        x: number,
+        y: number,
+        z: number,
+        w: number
+    },
     aniState: PlayerAniState
 }
 

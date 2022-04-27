@@ -20,7 +20,8 @@ export class RoomServer {
     readonly server = new WsServer(serviceProto, {
         port: this.options.port,
         // Remove this to use binary mode (remove from the client too)
-        json: true
+        json: true,
+        logMsg: false
     });
     readonly logger = this.server.logger;
 
@@ -101,10 +102,8 @@ export class RoomServer {
 
     private _clearIdleRooms() {
         const now = Date.now();
-        // 清除超过 10 秒没有玩家的房间
+        // 清除超过 5 秒没有玩家的房间
         this.rooms.filter(v => v.data.lastEmptyTime && now - v.data.lastEmptyTime >= 10000).forEach(room => {
-            this.rooms.removeOne(v => v === room);
-            this.id2Room.delete(room.data.id);
             room.destroy();
         })
     }

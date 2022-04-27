@@ -16,7 +16,7 @@ export async function ApiJoinRoom(call: ApiCall<ReqJoinRoom, ResJoinRoom>) {
 
     let room = roomServer.id2Room.get(call.req.roomId);
     if (!room) {
-        return call.error('房间不存在');
+        return call.error('房间不存在', { code: 'ROOM_NOT_EXISTS' });
     }
 
     if (room.data.users.length >= room.data.maxUser) {
@@ -37,8 +37,17 @@ export async function ApiJoinRoom(call: ApiCall<ReqJoinRoom, ResJoinRoom>) {
     room.data.users.push(currentUser);
     room.userStates[currentUser.id] = {
         uid: currentUser.id,
-        pos: [Math.random() * 10, 0, Math.random() * 10],
-        rotation: [0, 0, 0, 1],
+        pos: {
+            x: Math.random() * 10,
+            y: 0,
+            z: Math.random() * 10
+        },
+        rotation: {
+            x: 0,
+            y: 0,
+            z: 0,
+            w: 1
+        },
         aniState: 'idle'
     }
     conn.currentRoom = room;
@@ -46,13 +55,13 @@ export async function ApiJoinRoom(call: ApiCall<ReqJoinRoom, ResJoinRoom>) {
     room.data.lastEmptyTime = undefined;
     room.data.updateTime = Date.now();
 
-    room.broadcastMsg('serverMsg/UserJoin', {
-        time: new Date,
-        user: currentUser
-    })
-
     call.succ({
         roomData: room.data,
         currentUser: currentUser
     });
+
+    room.broadcastMsg('serverMsg/UserJoin', {
+        time: new Date,
+        user: currentUser
+    })
 }

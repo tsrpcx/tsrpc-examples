@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ChatMsgItem",
+    "_name": "PlayerName",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -28,15 +28,18 @@
       },
       {
         "__id__": 6
+      },
+      {
+        "__id__": 8
       }
     ],
     "_prefab": {
-      "__id__": 8
+      "__id__": 10
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 125.59999999999998,
+      "x": -134.979,
+      "y": -2.077,
       "z": 0
     },
     "_lrot": {
@@ -74,22 +77,22 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 700,
-      "height": 50.4
+      "width": 200,
+      "height": 75.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0.5
+      "x": 0.5,
+      "y": 0
     },
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "ff/k1Gm/1GXJ9P/uNIB6gW"
+    "fileId": "72/wIxcsVMkpMT7X9yvBkb"
   },
   {
-    "__type__": "cc.RichText",
+    "__type__": "cc.Label",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -99,26 +102,72 @@
     "__prefab": {
       "__id__": 5
     },
-    "_lineHeight": 40,
-    "_string": "<outline width=2><color=#00C113>王鹏</color> <color=#000000>有朋自远方来，不亦说乎？</color></o>",
-    "_horizontalAlign": 0,
-    "_fontSize": 28,
-    "_maxWidth": 700,
+    "_visFlags": 0,
+    "_customMaterial": null,
+    "_srcBlendFactor": 2,
+    "_dstBlendFactor": 4,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_string": "啊啊是真的吗那太好了呀",
+    "_horizontalAlign": 1,
+    "_verticalAlign": 1,
+    "_actualFontSize": 26,
+    "_fontSize": 26,
     "_fontFamily": "Arial",
+    "_lineHeight": 30,
+    "_overflow": 3,
+    "_enableWrapText": true,
     "_font": null,
     "_isSystemFontUsed": true,
-    "_userDefinedFont": null,
+    "_spacingX": 0,
+    "_isItalic": false,
+    "_isBold": false,
+    "_isUnderline": false,
+    "_underlineHeight": 2,
     "_cacheMode": 0,
-    "_imageAtlas": null,
-    "_handleTouchEvent": true,
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "f2AA/jdI1EPZunLnvfiYVF"
+    "fileId": "65wPUVPYdAlKuxMK7gKVmB"
   },
   {
-    "__type__": "cc.UIOpacity",
+    "__type__": "cc.LabelShadow",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": false,
+    "__prefab": {
+      "__id__": 7
+    },
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 50
+    },
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": -4
+    },
+    "_blur": 4,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "116+EznD1GMquKDcGEFW2o"
+  },
+  {
+    "__type__": "cc.LabelOutline",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -126,14 +175,21 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 7
+      "__id__": 9
     },
-    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 94
+    },
+    "_width": 4,
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "19xJSiZdpAwYbAwxxgOE8d"
+    "fileId": "f7YIEA9jFL4pZFHN6+LrqD"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -143,6 +199,6 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "35k6Hs03RBHrM3J3kVy1EP"
+    "fileId": "f1EZuEo4JMjqGPbqmjYDFe"
   }
 ]
