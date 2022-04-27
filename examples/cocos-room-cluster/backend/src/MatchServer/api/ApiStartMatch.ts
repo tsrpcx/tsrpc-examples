@@ -4,5 +4,5 @@ import { ReqStartMatch, ResStartMatch } from "../../shared/protocols/matchServer
 
 export async function ApiStartMatch(call: ApiCallHttp<ReqStartMatch, ResStartMatch>) {
     // 加入匹配队列，待匹配
-    matchServer.matchQueue.set(call.currentUser!.id, call);
+    matchServer.matchQueue.add(call);
 }

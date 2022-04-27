@@ -219,35 +219,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 1,
-                    "name": "creator",
-                    "type": {
-                        "type": "Reference",
-                        "target": "../../types/UserInfo/UserInfo"
-                    }
-                },
-                {
                     "id": 2,
                     "name": "roomName",
-                    "type": {
-                        "type": "String"
-                    }
-                }
-            ]
-        },
-        "../../types/UserInfo/UserInfo": {
-            "type": "Interface",
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "id",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 1,
-                    "name": "nickname",
                     "type": {
                         "type": "String"
                     }
@@ -452,6 +425,25 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "../../types/RoomData/RoomData"
+                    }
+                }
+            ]
+        },
+        "../../types/UserInfo/UserInfo": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "id",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "nickname",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]

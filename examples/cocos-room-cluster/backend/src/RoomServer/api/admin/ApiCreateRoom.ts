@@ -4,7 +4,7 @@ import { ReqCreateRoom, ResCreateRoom } from "../../../shared/protocols/roomServ
 
 export async function ApiCreateRoom(call: ApiCall<ReqCreateRoom, ResCreateRoom>) {
     let room = roomServer.createRoom(call.req.roomName);
-    
+
     call.succ({
         roomId: room.data.id
     })

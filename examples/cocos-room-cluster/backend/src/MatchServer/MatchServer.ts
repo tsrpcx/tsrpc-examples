@@ -1,8 +1,9 @@
 import chalk from "chalk";
 import path from "path";
-import { ApiCallHttp, ConnectionStatus, HttpServer, PrefixLogger, TsrpcError, WsClient } from "tsrpc";
+import { ApiCallHttp, ApiReturn, ConnectionStatus, HttpServer, PrefixLogger, TsrpcError, WsClient } from "tsrpc";
 import { BackConfig } from "../models/BackConfig";
 import { useAdminToken } from "../models/flows/useAdminToken";
+import { ResCreateRoom } from "../shared/protocols/matchServer/PtlCreateRoom";
 import { ReqStartMatch, ResStartMatch } from "../shared/protocols/matchServer/PtlStartMatch";
 import { MsgUpdateRoomState } from "../shared/protocols/roomServer/admin/MsgUpdateRoomState";
 import { serviceProto } from "../shared/protocols/serviceProto_matchServer";
@@ -22,6 +23,8 @@ export class MatchServer {
         client: WsClient<ServiceType_Room>,
         state?: MsgUpdateRoomState
     }[] = [];
+
+    private _nextRoomIndex = 1;
 
     constructor() {
         // Flows
@@ -113,7 +116,7 @@ export class MatchServer {
 
     // #region 匹配相关
     /** 待匹配队列 */
-    matchQueue = new Map<string, ApiCallHttp<ReqStartMatch, ResStartMatch>>();
+    matchQueue = new Set<ApiCallHttp<ReqStartMatch, ResStartMatch>>();
 
     async startMatch() {
         await this._doMatch().catch(e => {
@@ -136,15 +139,18 @@ export class MatchServer {
             let rooms = v.state?.rooms ?? [];
             return rooms.map(v1 => ({
                 ...v1,
-                serverUrl: v.url,
-                roomServerClient: v.client
+                serverUrl: v.url
             }))
-        }).flat().orderBy(v => v.startMatchTime);
+        }).flat().orderBy(v => v.startMatchTime).map(v => ({
+            id: v.id,
+            serverUrl: v.serverUrl,
+            userNum: v.userNum
+        }));
 
-        this.matchQueue.forEach((call, uid) => {
+        for (let call of this.matchQueue) {
             // 连接已断开，不再匹配
             if (call.conn.status !== ConnectionStatus.Opened) {
-                this.matchQueue.delete(uid);
+                this.matchQueue.delete(call);
                 return;
             }
 
@@ -152,6 +158,7 @@ export class MatchServer {
             let room = matchingRooms.filter(v => v.userNum < BackConfig.roomServer.maxRoomUserNum).orderByDesc(v => v.userNum)[0];
             // 匹配成功
             if (room) {
+                this.matchQueue.delete(call);
                 ++room.userNum;
                 if (room.userNum >= BackConfig.roomServer.maxRoomUserNum) {
                     matchingRooms.removeOne(v => v === room);
@@ -162,11 +169,52 @@ export class MatchServer {
                 })
                 ++succNum;
             }
-            // TODO 没有合适的房间，那么创建一个房间
-        })
+            // 没有合适的房间（但有至少一名其它玩家也在匹配中），那么创建一个房间
+            else if (this.matchQueue.size > 1) {
+                let retCreateRoom = await this.createRoom('系统房间 ' + (this._nextRoomIndex++));
+                if (retCreateRoom.isSucc) {
+                    matchingRooms.push({
+                        id: retCreateRoom.res.roomId,
+                        serverUrl: retCreateRoom.res.serverUrl,
+                        userNum: 1
+                    })
+
+                    this.matchQueue.delete(call);
+                    call.succ({
+                        roomId: retCreateRoom.res.roomId,
+                        serverUrl: retCreateRoom.res.serverUrl,
+                    })
+                }
+            }
+        }
 
         this.logger.log(`匹配结束，成功匹配人数=${succNum}`)
     }
     // #endregion
 
+    async createRoom(roomName: string): Promise<ApiReturn<ResCreateRoom>> {
+        // 挑选一个人数最少的 RoomServer
+        let roomServer = this.roomServers.filter(v => v.state).orderBy(v => v.state!.connNum)[0];
+        if (!roomServer) {
+            return { isSucc: false, err: new TsrpcError('没有可用的房间服务器') };
+        }
+
+        // RPC -> RoomServer
+        let op = await roomServer.client.callApi('admin/CreateRoom', {
+            adminToken: BackConfig.adminToken,
+            roomName: roomName
+        })
+        if (!op.isSucc) {
+            return { isSucc: false, err: new TsrpcError(op.err) };
+        }
+
+        // Return
+        return {
+            isSucc: true,
+            res: {
+                roomId: op.res.roomId,
+                serverUrl: roomServer.url
+            }
+        }
+    }
 }
