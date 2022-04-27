@@ -19,12 +19,12 @@ export class RoomScene extends Component {
     onLoad() {
         this.joyStick.options = {
             onOperate: v => {
-                this.player.state = 'walking';
+                this.player.aniState = 'walking';
                 this.player.node.position = this.player.node.position.add3f(v.x * 0.1, 0, -v.y * 0.1);
                 this.player.node.rotation = Quat.rotateY(q4_1, Quat.IDENTITY, Vec2.UNIT_X.signAngle(v2_1.set(v.x, v.y)) + Math.PI * 0.5)
             },
             onOperateEnd: () => {
-                this.player.state = 'idle';
+                this.player.aniState = 'idle';
             },
             alwaysActive: true
         }
@@ -32,7 +32,7 @@ export class RoomScene extends Component {
 
     onBtnAction(e: any, state: 'wave' | 'punch') {
         this.joyStick.onTouchEnd();
-        this.player.state = state;        
+        this.player.aniState = state;
     }
 
 }

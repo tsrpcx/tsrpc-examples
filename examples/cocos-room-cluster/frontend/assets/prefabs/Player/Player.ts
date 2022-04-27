@@ -1,5 +1,6 @@
 
 import { Camera, Color, Component, Node, SkeletalAnimation, SkinnedMeshRenderer, Vec3, _decorator } from 'cc';
+import { PlayerAniState } from '../../scripts/shared/types/RoomUserState';
 const { ccclass, property } = _decorator;
 
 const v3_1 = new Vec3;
@@ -20,28 +21,28 @@ export class Player extends Component {
 
     private _scheduler?: any;
 
-    private _state: PlayerState = 'idle';
-    public get state(): PlayerState {
-        return this._state;
+    private _aniState: PlayerAniState = 'idle';
+    public get aniState(): PlayerAniState {
+        return this._aniState;
     }
-    public set state(v: PlayerState) {
-        if (this._state === v) {
+    public set aniState(v: PlayerAniState) {
+        if (this._aniState === v) {
             return;
         }
-        this._state = v;
+        this._aniState = v;
 
         this.unscheduleAllCallbacks();
         this.ani.crossFade(v, 0.5);
 
         if (v === 'wave') {
             this.scheduleOnce(() => {
-                this.state = 'idle';
+                this.aniState = 'idle';
             }, 4.73)
         }
 
         if (v === 'punch') {
             this.scheduleOnce(() => {
-                this.state = 'idle';
+                this.aniState = 'idle';
             }, 2.27)
         }
     }
@@ -65,5 +66,3 @@ export class Player extends Component {
     }
 
 }
-
-export type PlayerState = 'idle' | 'walking' | 'wave' | 'punch';

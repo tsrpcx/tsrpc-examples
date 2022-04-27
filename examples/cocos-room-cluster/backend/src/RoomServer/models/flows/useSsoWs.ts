@@ -7,10 +7,15 @@ import { RoomServerConn } from "../../RoomServer";
 export function useSsoWs(server: WsServer) {
     server.flows.preApiCallFlow.push(async call => {
         const conn = call.conn as RoomServerConn;
-        // 需要登录的接口：前置登录态判定
-        if (!call.service.conf?.allowGuest) {
+        // 部分接口需要登录和加入房间后才可使用
+        if (!call.service.name.startsWith('admin/') && call.service.name !== 'JoinRoom') {
             if (!conn.currentUser) {
                 call.error('你还未登录', { code: 'NEED_LOGIN' });
+                return undefined;
+            }
+
+            if (!conn.currentRoom) {
+                call.error('尚未加入房间', { code: 'NO_ROOM' });
                 return undefined;
             }
         }

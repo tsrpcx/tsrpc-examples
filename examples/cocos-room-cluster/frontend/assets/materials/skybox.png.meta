@@ -2,7 +2,7 @@
   "ver": "1.0.22",
   "importer": "image",
   "imported": true,
-  "uuid": "bfcabedf-03b5-411d-9bdb-943852e26cd2",
+  "uuid": "97dd4a08-52ca-4cae-9ebd-643d59530a5f",
   "files": [
     ".png",
     ".json"
@@ -10,7 +10,7 @@
   "subMetas": {
     "b47c0": {
       "importer": "erp-texture-cube",
-      "uuid": "bfcabedf-03b5-411d-9bdb-943852e26cd2@b47c0",
+      "uuid": "97dd4a08-52ca-4cae-9ebd-643d59530a5f@b47c0",
       "displayName": "skybox",
       "id": "b47c0",
       "name": "textureCube",
@@ -32,7 +32,7 @@
       "subMetas": {
         "74afd": {
           "importer": "texture-cube-face",
-          "uuid": "bfcabedf-03b5-411d-9bdb-943852e26cd2@b47c0@74afd",
+          "uuid": "97dd4a08-52ca-4cae-9ebd-643d59530a5f@b47c0@74afd",
           "displayName": "",
           "id": "74afd",
           "name": "right",
@@ -47,7 +47,7 @@
         },
         "8fd34": {
           "importer": "texture-cube-face",
-          "uuid": "bfcabedf-03b5-411d-9bdb-943852e26cd2@b47c0@8fd34",
+          "uuid": "97dd4a08-52ca-4cae-9ebd-643d59530a5f@b47c0@8fd34",
           "displayName": "",
           "id": "8fd34",
           "name": "left",
@@ -62,7 +62,7 @@
         },
         "bb97f": {
           "importer": "texture-cube-face",
-          "uuid": "bfcabedf-03b5-411d-9bdb-943852e26cd2@b47c0@bb97f",
+          "uuid": "97dd4a08-52ca-4cae-9ebd-643d59530a5f@b47c0@bb97f",
           "displayName": "",
           "id": "bb97f",
           "name": "top",
@@ -77,7 +77,7 @@
         },
         "7d38f": {
           "importer": "texture-cube-face",
-          "uuid": "bfcabedf-03b5-411d-9bdb-943852e26cd2@b47c0@7d38f",
+          "uuid": "97dd4a08-52ca-4cae-9ebd-643d59530a5f@b47c0@7d38f",
           "displayName": "",
           "id": "7d38f",
           "name": "bottom",
@@ -92,7 +92,7 @@
         },
         "e9a6d": {
           "importer": "texture-cube-face",
-          "uuid": "bfcabedf-03b5-411d-9bdb-943852e26cd2@b47c0@e9a6d",
+          "uuid": "97dd4a08-52ca-4cae-9ebd-643d59530a5f@b47c0@e9a6d",
           "displayName": "",
           "id": "e9a6d",
           "name": "front",
@@ -107,7 +107,7 @@
         },
         "40c10": {
           "importer": "texture-cube-face",
-          "uuid": "bfcabedf-03b5-411d-9bdb-943852e26cd2@b47c0@40c10",
+          "uuid": "97dd4a08-52ca-4cae-9ebd-643d59530a5f@b47c0@40c10",
           "displayName": "",
           "id": "40c10",
           "name": "back",
@@ -126,6 +126,6 @@
   "userData": {
     "hasAlpha": false,
     "type": "texture cube",
-    "redirect": "bfcabedf-03b5-411d-9bdb-943852e26cd2@b47c0"
+    "redirect": "97dd4a08-52ca-4cae-9ebd-643d59530a5f@b47c0"
   }
 }

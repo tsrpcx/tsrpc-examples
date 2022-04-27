@@ -3,12 +3,16 @@ import { roomServer } from "../../roomServer";
 import { MsgUpdateRoomState } from "../../shared/protocols/roomServer/admin/MsgUpdateRoomState";
 import { ServiceType } from "../../shared/protocols/serviceProto_roomServer";
 import { RoomData } from "../../shared/types/RoomData";
+import { RoomUserState } from "../../shared/types/RoomUserState";
 import { RoomServerConn } from "../RoomServer";
 
 export class Room {
 
     data: RoomData;
     conns: RoomServerConn[] = [];
+    userStates: {
+        [uid: string]: RoomUserState
+    } = {};
     logger: PrefixLogger;
 
     constructor(data: RoomData) {
@@ -18,6 +22,13 @@ export class Room {
             logger: roomServer.logger,
             prefixs: [`[Room ${data.id}]`],
         });
+
+        // 每 100ms 同步一次 UserState
+        this._setInterval(() => {
+            this.broadcastMsg('serverMsg/UserStates', {
+                userStates: this.userStates
+            })
+        }, 100);
     }
 
     get state(): MsgUpdateRoomState['rooms'][number] {
@@ -39,27 +50,34 @@ export class Room {
     }
 
     listenMsgs(conn: RoomServerConn) {
-        // TODO
+        conn.listenMsg('clientMsg/UserState', call => {
+            const conn = call.conn as RoomServerConn;
+            this.userStates[conn.currentUser.id] = {
+                uid: conn.currentUser.id,
+                ...call.msg
+            }
+        })
     }
     unlistenMsgs(conn: RoomServerConn) {
-        // TODO
+        conn.unlistenMsgAll('clientMsg/UserState');
     }
 
     leave(conn: RoomServerConn) {
-        const currentUser = conn?.currentUser!;
+        const currentUser = conn.currentUser;
         this.logger.log('[UserLeave]', currentUser?.id);
 
         this.conns.removeOne(v => v === conn);
         this.data.users.removeOne(v => v.id === currentUser.id);
+        delete this.userStates[currentUser.id]
         this.data.updateTime = Date.now();
 
         if (conn) {
-            conn.currentRoom = undefined;
+            conn.close();
             this.unlistenMsgs(conn);
         }
 
         if (currentUser) {
-            this.broadcastMsg('room/serverMsg/UserExit', {
+            this.broadcastMsg('serverMsg/UserExit', {
                 time: new Date,
                 user: currentUser!
             })
@@ -72,6 +90,13 @@ export class Room {
 
     destroy() {
         this.logger.log('[Destroy]');
+        this._intervals.forEach(v => { clearInterval(v) });
+        this._intervals = [];
+    }
+
+    private _intervals: ReturnType<typeof setInterval>[] = [];
+    private _setInterval(func: () => void, interval: number) {
+        this._intervals.push(setInterval(func, interval))
     }
 
 }

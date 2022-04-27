@@ -1,14 +1,8 @@
-import { BaseConf, BaseRequest, BaseResponse } from "../base";
-
-export interface ReqCreateRoom extends BaseRequest {
+export interface ReqCreateRoom {
     roomName: string
 }
 
-export interface ResCreateRoom extends BaseResponse {
+export interface ResCreateRoom {
     serverUrl: string,
     roomId: string
-}
-
-export const conf: BaseConf = {
-
 }

@@ -2,13 +2,14 @@ import { ServiceProto } from 'tsrpc-proto';
 import { MsgUpdateRoomState } from './roomServer/admin/MsgUpdateRoomState';
 import { ReqAuth, ResAuth } from './roomServer/admin/PtlAuth';
 import { ReqCreateRoom, ResCreateRoom } from './roomServer/admin/PtlCreateRoom';
-import { ReqLogin, ResLogin } from './roomServer/PtlLogin';
-import { ReqExit, ResExit } from './roomServer/room/PtlExit';
-import { ReqJoin, ResJoin } from './roomServer/room/PtlJoin';
-import { ReqSendChat, ResSendChat } from './roomServer/room/PtlSendChat';
-import { MsgChat } from './roomServer/room/serverMsg/MsgChat';
-import { MsgUserExit } from './roomServer/room/serverMsg/MsgUserExit';
-import { MsgUserJoin } from './roomServer/room/serverMsg/MsgUserJoin';
+import { MsgUserState } from './roomServer/clientMsg/MsgUserState';
+import { ReqExitRoom, ResExitRoom } from './roomServer/PtlExitRoom';
+import { ReqJoinRoom, ResJoinRoom } from './roomServer/PtlJoinRoom';
+import { ReqSendChat, ResSendChat } from './roomServer/PtlSendChat';
+import { MsgChat } from './roomServer/serverMsg/MsgChat';
+import { MsgUserExit } from './roomServer/serverMsg/MsgUserExit';
+import { MsgUserJoin } from './roomServer/serverMsg/MsgUserJoin';
+import { MsgUserStates } from './roomServer/serverMsg/MsgUserStates';
 
 export interface ServiceType {
     api: {
@@ -20,33 +21,31 @@ export interface ServiceType {
             req: ReqCreateRoom,
             res: ResCreateRoom
         },
-        "Login": {
-            req: ReqLogin,
-            res: ResLogin
+        "ExitRoom": {
+            req: ReqExitRoom,
+            res: ResExitRoom
         },
-        "room/Exit": {
-            req: ReqExit,
-            res: ResExit
+        "JoinRoom": {
+            req: ReqJoinRoom,
+            res: ResJoinRoom
         },
-        "room/Join": {
-            req: ReqJoin,
-            res: ResJoin
-        },
-        "room/SendChat": {
+        "SendChat": {
             req: ReqSendChat,
             res: ResSendChat
         }
     },
     msg: {
         "admin/UpdateRoomState": MsgUpdateRoomState,
-        "room/serverMsg/Chat": MsgChat,
-        "room/serverMsg/UserExit": MsgUserExit,
-        "room/serverMsg/UserJoin": MsgUserJoin
+        "clientMsg/UserState": MsgUserState,
+        "serverMsg/Chat": MsgChat,
+        "serverMsg/UserExit": MsgUserExit,
+        "serverMsg/UserJoin": MsgUserJoin,
+        "serverMsg/UserStates": MsgUserStates
     }
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 2,
+    "version": 1,
     "services": [
         {
             "id": 0,
@@ -70,44 +69,46 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
+            "id": 11,
+            "name": "clientMsg/UserState",
+            "type": "msg"
+        },
+        {
             "id": 3,
-            "name": "Login",
+            "name": "ExitRoom",
             "type": "api",
-            "conf": {
-                "allowGuest": true
-            }
+            "conf": {}
         },
         {
             "id": 4,
-            "name": "room/Exit",
+            "name": "JoinRoom",
             "type": "api",
             "conf": {}
         },
         {
             "id": 5,
-            "name": "room/Join",
-            "type": "api",
-            "conf": {}
-        },
-        {
-            "id": 6,
-            "name": "room/SendChat",
+            "name": "SendChat",
             "type": "api",
             "conf": {}
         },
         {
             "id": 7,
-            "name": "room/serverMsg/Chat",
+            "name": "serverMsg/Chat",
             "type": "msg"
         },
         {
             "id": 8,
-            "name": "room/serverMsg/UserExit",
+            "name": "serverMsg/UserExit",
             "type": "msg"
         },
         {
             "id": 9,
-            "name": "room/serverMsg/UserJoin",
+            "name": "serverMsg/UserJoin",
+            "type": "msg"
+        },
+        {
+            "id": 10,
+            "name": "serverMsg/UserStates",
             "type": "msg"
         }
     ],
@@ -154,7 +155,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                     }
                                 },
                                 {
-                                    "id": 5,
+                                    "id": 3,
                                     "name": "maxUserNum",
                                     "type": {
                                         "type": "Number",
@@ -162,7 +163,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                     }
                                 },
                                 {
-                                    "id": 3,
+                                    "id": 4,
                                     "name": "startMatchTime",
                                     "type": {
                                         "type": "Number",
@@ -171,7 +172,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                     "optional": true
                                 },
                                 {
-                                    "id": 4,
+                                    "id": 5,
                                     "name": "updateTime",
                                     "type": {
                                         "type": "Number",
@@ -265,7 +266,109 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "PtlLogin/ReqLogin": {
+        "clientMsg/MsgUserState/MsgUserState": {
+            "target": {
+                "type": "Reference",
+                "target": "../../types/RoomUserState/RoomUserState"
+            },
+            "keys": [
+                "uid"
+            ],
+            "type": "Omit"
+        },
+        "../../types/RoomUserState/RoomUserState": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "uid",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "pos",
+                    "type": {
+                        "type": "Tuple",
+                        "elementTypes": [
+                            {
+                                "type": "Number"
+                            },
+                            {
+                                "type": "Number"
+                            },
+                            {
+                                "type": "Number"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "rotation",
+                    "type": {
+                        "type": "Tuple",
+                        "elementTypes": [
+                            {
+                                "type": "Number"
+                            },
+                            {
+                                "type": "Number"
+                            },
+                            {
+                                "type": "Number"
+                            },
+                            {
+                                "type": "Number"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "aniState",
+                    "type": {
+                        "type": "Reference",
+                        "target": "../../types/RoomUserState/PlayerAniState"
+                    }
+                }
+            ]
+        },
+        "../../types/RoomUserState/PlayerAniState": {
+            "type": "Union",
+            "members": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Literal",
+                        "literal": "idle"
+                    }
+                },
+                {
+                    "id": 1,
+                    "type": {
+                        "type": "Literal",
+                        "literal": "walking"
+                    }
+                },
+                {
+                    "id": 2,
+                    "type": {
+                        "type": "Literal",
+                        "literal": "wave"
+                    }
+                },
+                {
+                    "id": 3,
+                    "type": {
+                        "type": "Literal",
+                        "literal": "punch"
+                    }
+                }
+            ]
+        },
+        "PtlExitRoom/ReqExitRoom": {
             "type": "Interface",
             "extends": [
                 {
@@ -275,31 +378,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "target": "../base/BaseRequest"
                     }
                 }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "sso",
-                    "type": {
-                        "type": "String"
-                    }
-                }
             ]
         },
         "../base/BaseRequest": {
-            "type": "Interface",
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "sso",
-                    "type": {
-                        "type": "String"
-                    },
-                    "optional": true
-                }
-            ]
+            "type": "Interface"
         },
-        "PtlLogin/ResLogin": {
+        "PtlExitRoom/ResExitRoom": {
             "type": "Interface",
             "extends": [
                 {
@@ -307,16 +391,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "../base/BaseResponse"
-                    }
-                }
-            ],
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "user",
-                    "type": {
-                        "type": "Reference",
-                        "target": "../../types/UserInfo/UserInfo"
                     }
                 }
             ]
@@ -324,31 +398,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
         "../base/BaseResponse": {
             "type": "Interface"
         },
-        "room/PtlExit/ReqExit": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../base/BaseRequest"
-                    }
-                }
-            ]
-        },
-        "room/PtlExit/ResExit": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../base/BaseResponse"
-                    }
-                }
-            ]
-        },
-        "room/PtlJoin/ReqJoin": {
+        "PtlJoinRoom/ReqJoinRoom": {
             "type": "Interface",
             "extends": [
                 {
@@ -362,6 +412,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "properties": [
                 {
                     "id": 0,
+                    "name": "nickname",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
                     "name": "roomId",
                     "type": {
                         "type": "String"
@@ -369,7 +426,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "room/PtlJoin/ResJoin": {
+        "PtlJoinRoom/ResJoinRoom": {
             "type": "Interface",
             "extends": [
                 {
@@ -383,6 +440,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "properties": [
                 {
                     "id": 0,
+                    "name": "currentUser",
+                    "type": {
+                        "type": "Reference",
+                        "target": "../../types/UserInfo/UserInfo"
+                    }
+                },
+                {
+                    "id": 1,
                     "name": "roomData",
                     "type": {
                         "type": "Reference",
@@ -486,7 +551,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "room/PtlSendChat/ReqSendChat": {
+        "PtlSendChat/ReqSendChat": {
             "type": "Interface",
             "extends": [
                 {
@@ -515,7 +580,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "room/PtlSendChat/ResSendChat": {
+        "PtlSendChat/ResSendChat": {
             "type": "Interface",
             "extends": [
                 {
@@ -527,7 +592,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "room/serverMsg/MsgChat/MsgChat": {
+        "serverMsg/MsgChat/MsgChat": {
             "type": "Interface",
             "properties": [
                 {
@@ -551,18 +616,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "String"
                     }
-                },
-                {
-                    "id": 3,
-                    "name": "isPrivate",
-                    "type": {
-                        "type": "Boolean"
-                    },
-                    "optional": true
                 }
             ]
         },
-        "room/serverMsg/MsgUserExit/MsgUserExit": {
+        "serverMsg/MsgUserExit/MsgUserExit": {
             "type": "Interface",
             "properties": [
                 {
@@ -582,7 +639,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "room/serverMsg/MsgUserJoin/MsgUserJoin": {
+        "serverMsg/MsgUserJoin/MsgUserJoin": {
             "type": "Interface",
             "properties": [
                 {
@@ -598,6 +655,25 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "../../types/UserInfo/UserInfo"
+                    }
+                }
+            ]
+        },
+        "serverMsg/MsgUserStates/MsgUserStates": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "userStates",
+                    "type": {
+                        "type": "Interface",
+                        "indexSignature": {
+                            "keyType": "String",
+                            "type": {
+                                "type": "Reference",
+                                "target": "../../types/RoomUserState/RoomUserState"
+                            }
+                        }
                     }
                 }
             ]

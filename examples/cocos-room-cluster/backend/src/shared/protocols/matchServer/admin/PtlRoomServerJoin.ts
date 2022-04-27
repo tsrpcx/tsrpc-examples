@@ -1,4 +1,3 @@
-import { BaseConf } from "../../base";
 
 export interface ReqRoomServerJoin {
     /** RoomServer 的连接地址 */
@@ -9,8 +8,4 @@ export interface ReqRoomServerJoin {
 
 export interface ResRoomServerJoin {
 
-}
-
-export const conf: BaseConf = {
-    allowGuest: true
 }

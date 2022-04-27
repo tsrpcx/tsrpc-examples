@@ -111,8 +111,8 @@ export class RoomServer {
 }
 
 export type RoomServerConn = WsConnection<ServiceType> & {
-    currentUser?: UserInfo;
-    currentRoom?: Room;
+    currentUser: UserInfo;
+    currentRoom: Room;
     matchServer?: {
         intervalSendState: ReturnType<typeof setInterval>;
     }

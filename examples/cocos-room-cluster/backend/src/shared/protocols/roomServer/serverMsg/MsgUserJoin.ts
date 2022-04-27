@@ -1,4 +1,4 @@
-import { UserInfo } from "../../../../types/UserInfo"
+import { UserInfo } from "../../../types/UserInfo"
 
 /** 系统消息 */
 export interface MsgUserJoin {

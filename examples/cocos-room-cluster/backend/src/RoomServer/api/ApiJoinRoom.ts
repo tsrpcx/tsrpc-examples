@@ -1,9 +1,19 @@
 import { ApiCall } from "tsrpc";
-import { roomServer } from "../../../roomServer";
-import { ReqJoin, ResJoin } from "../../../shared/protocols/roomServer/room/PtlJoin";
-import { RoomServerConn } from "../../RoomServer";
+import * as uuid from 'uuid';
+import { roomServer } from "../../roomServer";
+import { ReqJoinRoom, ResJoinRoom } from "../../shared/protocols/roomServer/PtlJoinRoom";
+import { UserInfo } from "../../shared/types/UserInfo";
+import { RoomServerConn } from "../RoomServer";
 
-export async function ApiJoin(call: ApiCall<ReqJoin, ResJoin>) {
+export async function ApiJoinRoom(call: ApiCall<ReqJoinRoom, ResJoinRoom>) {
+    // Login
+    const currentUser: UserInfo = {
+        id: uuid.v4(),
+        nickname: call.req.nickname
+    }
+    const conn = call.conn as RoomServerConn;
+    conn.currentUser = currentUser;
+
     let room = roomServer.id2Room.get(call.req.roomId);
     if (!room) {
         return call.error('房间不存在');
@@ -12,9 +22,6 @@ export async function ApiJoin(call: ApiCall<ReqJoin, ResJoin>) {
     if (room.data.users.length >= room.data.maxUser) {
         return call.error('该房间已满员');
     }
-
-    const conn = call.conn as RoomServerConn;
-    const currentUser = conn.currentUser!;
 
     // 用户已经在本房间中，可能是通过其它设备登录，踢出旧连接
     let existedConns = room.conns.filter(v => v.currentUser!.id === currentUser.id);
@@ -28,15 +35,24 @@ export async function ApiJoin(call: ApiCall<ReqJoin, ResJoin>) {
 
     room.conns.push(conn);
     room.data.users.push(currentUser);
+    room.userStates[currentUser.id] = {
+        uid: currentUser.id,
+        pos: [Math.random() * 10, 0, Math.random() * 10],
+        rotation: [0, 0, 0, 1],
+        aniState: 'idle'
+    }
     conn.currentRoom = room;
     room.listenMsgs(conn);
     room.data.lastEmptyTime = undefined;
     room.data.updateTime = Date.now();
 
-    room.broadcastMsg('room/serverMsg/UserJoin', {
+    room.broadcastMsg('serverMsg/UserJoin', {
         time: new Date,
         user: currentUser
     })
 
-    call.succ({ roomData: room.data });
+    call.succ({
+        roomData: room.data,
+        currentUser: currentUser
+    });
 }

@@ -1,4 +1,4 @@
-import { UserInfo } from "../../../../types/UserInfo";
+import { UserInfo } from "../../../types/UserInfo";
 
 export interface MsgUserExit {
     time: Date,

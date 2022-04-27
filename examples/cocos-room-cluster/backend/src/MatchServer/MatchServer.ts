@@ -2,7 +2,7 @@ import chalk from "chalk";
 import path from "path";
 import { ApiCallHttp, ConnectionStatus, HttpServer, PrefixLogger, TsrpcError, WsClient } from "tsrpc";
 import { BackConfig } from "../models/BackConfig";
-import { useSso } from "../models/flows/useSso";
+import { useAdminToken } from "../models/flows/useAdminToken";
 import { ReqStartMatch, ResStartMatch } from "../shared/protocols/matchServer/PtlStartMatch";
 import { MsgUpdateRoomState } from "../shared/protocols/roomServer/admin/MsgUpdateRoomState";
 import { serviceProto } from "../shared/protocols/serviceProto_matchServer";
@@ -25,8 +25,7 @@ export class MatchServer {
 
     constructor() {
         // Flows
-        // 前置鉴别登录态
-        useSso(this.server);
+        useAdminToken(this.server);
     }
 
     async init() {

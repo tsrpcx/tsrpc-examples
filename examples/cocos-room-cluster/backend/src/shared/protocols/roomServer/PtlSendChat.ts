@@ -1,4 +1,4 @@
-import { BaseConf, BaseRequest, BaseResponse } from "./../../base";
+import { BaseConf, BaseRequest, BaseResponse } from "../base";
 
 export interface ReqSendChat extends BaseRequest {
     content: string,

@@ -29,33 +29,26 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 1,
     "services": [
         {
             "id": 0,
             "name": "admin/RoomServerJoin",
-            "type": "api",
-            "conf": {
-                "allowGuest": true
-            }
+            "type": "api"
         },
         {
             "id": 1,
             "name": "CreateRoom",
-            "type": "api",
-            "conf": {}
+            "type": "api"
         },
         {
             "id": 2,
             "name": "ListRooms",
-            "type": "api",
-            "conf": {}
+            "type": "api"
         },
         {
             "id": 3,
             "name": "StartMatch",
-            "type": "api",
-            "conf": {}
+            "type": "api"
         }
     ],
     "types": {
@@ -83,15 +76,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
         },
         "PtlCreateRoom/ReqCreateRoom": {
             "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../base/BaseRequest"
-                    }
-                }
-            ],
             "properties": [
                 {
                     "id": 0,
@@ -102,30 +86,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "../base/BaseRequest": {
-            "type": "Interface",
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "sso",
-                    "type": {
-                        "type": "String"
-                    },
-                    "optional": true
-                }
-            ]
-        },
         "PtlCreateRoom/ResCreateRoom": {
             "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../base/BaseResponse"
-                    }
-                }
-            ],
             "properties": [
                 {
                     "id": 0,
@@ -143,32 +105,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "../base/BaseResponse": {
-            "type": "Interface"
-        },
         "PtlListRooms/ReqListRooms": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../base/BaseRequest"
-                    }
-                }
-            ]
+            "type": "Interface"
         },
         "PtlListRooms/ResListRooms": {
             "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../base/BaseResponse"
-                    }
-                }
-            ],
             "properties": [
                 {
                     "id": 0,
@@ -194,7 +135,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                     }
                                 },
                                 {
-                                    "id": 4,
+                                    "id": 2,
                                     "name": "maxUserNum",
                                     "type": {
                                         "type": "Number",
@@ -202,14 +143,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                     }
                                 },
                                 {
-                                    "id": 2,
+                                    "id": 3,
                                     "name": "serverUrl",
                                     "type": {
                                         "type": "String"
                                     }
                                 },
                                 {
-                                    "id": 3,
+                                    "id": 4,
                                     "name": "roomId",
                                     "type": {
                                         "type": "String"
@@ -222,28 +163,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ]
         },
         "PtlStartMatch/ReqStartMatch": {
-            "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../base/BaseRequest"
-                    }
-                }
-            ]
+            "type": "Interface"
         },
         "PtlStartMatch/ResStartMatch": {
             "type": "Interface",
-            "extends": [
-                {
-                    "id": 0,
-                    "type": {
-                        "type": "Reference",
-                        "target": "../base/BaseResponse"
-                    }
-                }
-            ],
             "properties": [
                 {
                     "id": 0,

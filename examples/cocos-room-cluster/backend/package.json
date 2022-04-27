@@ -4,8 +4,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "START npm run dev:hall & START npm run dev:match & START npm run dev:room",
-    "dev:hall": "tsrpc-cli dev --entry src/hallServer.ts",
+    "dev": "START npm run dev:match & START npm run dev:room",
     "dev:match": "tsrpc-cli dev --entry src/matchServer.ts",
     "dev:room": "tsrpc-cli dev --entry src/roomServer.ts",
     "dev:room2": "cross-env PORT=3004 tsrpc-cli dev --entry src/roomServer.ts",
